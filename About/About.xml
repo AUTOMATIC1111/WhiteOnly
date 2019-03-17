@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>White only</name>
+	<author>AUTOMATIC</author>
+	<supportedVersions><li>1.0</li></supportedVersions>
+	<description><![CDATA[All new pawns will have white skin color.
+]]></description>
+</ModMetaData>
