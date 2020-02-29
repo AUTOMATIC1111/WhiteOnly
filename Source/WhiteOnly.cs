@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using System.Reflection;
 using Verse;
 
@@ -10,7 +10,7 @@ namespace WhiteOnly
 
         static WhiteOnly()
         {
-            var harmony = HarmonyInstance.Create("com.github.automatic1111.whiteonly");
+            var harmony = new Harmony("com.github.automatic1111.whiteonly");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
     }
