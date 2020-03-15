@@ -10,14 +10,12 @@ using Verse;
 
 namespace WhiteOnly
 {
-    [HarmonyPatch(typeof(PawnSkinColors), "RandomMelanin", new Type[] { typeof(Faction) }), StaticConstructorOnStartup]
-    class PatchPawnSkinColors
+    [HarmonyPatch(typeof(PawnSkinColors), "RandomMelanin", new Type[] { typeof(Faction) })]
+    class PatchPawnSkinColorsRandomMelanin
     {
-        static FloatRange range = new FloatRange(0f, 0.5f);
-
         static bool Prefix(ref float __result)
         {
-            __result = range.RandomInRange;
+            __result = WhiteOnly.colorRange.RandomInRange;
             return false;
         }
     }
