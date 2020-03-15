@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
 using System.Reflection;
+using UnityEngine;
 using Verse;
 
 namespace WhiteOnly
@@ -10,20 +11,29 @@ namespace WhiteOnly
     {
         public static FloatRange colorRange = new FloatRange(0f, 0.5f);
 
+        static void applyOptionalPatch(Harmony harmony, string className, string methodName, HarmonyMethod prefix = null, HarmonyMethod postfix = null)
+        {
+            Type t = GenTypes.GetTypeInAnyAssembly(className);
+            try
+            {
+                if (t != null)
+                    harmony.Patch(AccessTools.Method(t, methodName), prefix, postfix);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Failed to patch " + className + "." + methodName + ": " + e.ToString());
+            }
+        }
+
         static WhiteOnly()
         {
             var harmony = new Harmony("com.github.automatic1111.whiteonly");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            Type ColorGenerator_SkinColorMelanin = GenTypes.GetTypeInAnyAssembly("AlienRace.ColorGenerator_SkinColorMelanin");
-            try
+            if (GenTypes.GetTypeInAnyAssembly("AlienRace.HarmonyPatches") != null)
             {
-                if (ColorGenerator_SkinColorMelanin != null)
-                    harmony.Patch(AccessTools.Method(ColorGenerator_SkinColorMelanin, "NewRandomizedColor"), new HarmonyMethod(typeof(PatchColorGenerator_SkinColorMelanin), "Prefix"));
-            }
-            catch (Exception e)
-            {
-                Log.Error("Failed to patch AlienRace.ColorGenerator_SkinColorMelanin: " + e.ToString());
+                applyOptionalPatch(harmony, "AlienRace.ColorGenerator_SkinColorMelanin", "NewRandomizedColor", new HarmonyMethod(typeof(PatchColorGenerator_SkinColorMelanin), "Prefix"));
+                applyOptionalPatch(harmony, "Verse.PawnGraphicSet", "ResolveApparelGraphics", new HarmonyMethod(typeof(PatchPawnGraphicSetResolveApparelGraphics), "Prefix"));
             }
         }
     }
