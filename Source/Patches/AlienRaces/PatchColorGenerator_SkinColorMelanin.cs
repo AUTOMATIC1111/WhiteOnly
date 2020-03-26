@@ -13,9 +13,8 @@ namespace WhiteOnly
     {
         static bool Prefix(ref Color __result)
         {
-            __result = PawnSkinColors.GetSkinColor(WhiteOnly.colorRange.RandomInRange);
+            __result = PawnSkinColors.GetSkinColor(WhiteOnly.settings.melaninRange.RandomInRange * 0.01f);
             return false;
         }
-
     }
 }

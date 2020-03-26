@@ -13,10 +13,14 @@ namespace WhiteOnly
     [HarmonyPatch(typeof(PawnSkinColors), "RandomMelanin", new Type[] { typeof(Faction) })]
     class PatchPawnSkinColorsRandomMelanin
     {
-        static bool Prefix(ref float __result)
+        static float Postfix(float value)
         {
-            __result = WhiteOnly.colorRange.RandomInRange;
-            return false;
+            int v = Mathf.RoundToInt(value * 100);
+            IntRange range = WhiteOnly.settings.melaninRange;
+
+            if (v < range.min || v > range.max) value = range.RandomInRange * 0.01f;
+
+            return value;
         }
     }
 }

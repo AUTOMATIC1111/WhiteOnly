@@ -323,10 +323,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="PatchPawnGraphicSetResolveApparelGraphics.cs" />
-    <Compile Include="PatchColorGenerator_SkinColorMelanin.cs" />
-    <Compile Include="PatchPawnSkinColors.cs" />
+    <Compile Include="Patches\AlienRaces\PatchPawnGraphicSetResolveApparelGraphics.cs" />
+    <Compile Include="Patches\AlienRaces\PatchColorGenerator_SkinColorMelanin.cs" />
+    <Compile Include="Patches\PatchPawnSkinColors.cs" />
+    <Compile Include="PawnGraphicRenderer.cs" />
+    <Compile Include="SkincolorWidgetUtil.cs" />
     <Compile Include="WhiteOnly.cs" />
+    <Compile Include="WhiteOnlySettings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -343,7 +346,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_StartDate="2000/1/1" />
+      <UserProperties BuildVersion_StartDate="2000/1/1" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

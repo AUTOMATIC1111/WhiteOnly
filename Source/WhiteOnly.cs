@@ -6,10 +6,9 @@ using Verse;
 
 namespace WhiteOnly
 {
-    [StaticConstructorOnStartup]
-    public class WhiteOnly
+    public class WhiteOnly : Mod
     {
-        public static FloatRange colorRange = new FloatRange(0f, 0.5f);
+        public static WhiteOnlySettings settings;
 
         static void applyOptionalPatch(Harmony harmony, string className, string methodName, HarmonyMethod prefix = null, HarmonyMethod postfix = null)
         {
@@ -25,7 +24,7 @@ namespace WhiteOnly
             }
         }
 
-        static WhiteOnly()
+        public WhiteOnly(ModContentPack pack) :base(pack)
         {
             var harmony = new Harmony("com.github.automatic1111.whiteonly");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
@@ -35,6 +34,19 @@ namespace WhiteOnly
                 applyOptionalPatch(harmony, "AlienRace.ColorGenerator_SkinColorMelanin", "NewRandomizedColor", new HarmonyMethod(typeof(PatchColorGenerator_SkinColorMelanin), "Prefix"));
                 applyOptionalPatch(harmony, "Verse.PawnGraphicSet", "ResolveApparelGraphics", new HarmonyMethod(typeof(PatchPawnGraphicSetResolveApparelGraphics), "Prefix"));
             }
+
+            settings = GetSettings<WhiteOnlySettings>();
+        }
+
+        public override void DoSettingsWindowContents(Rect inRect)
+        {
+            base.DoSettingsWindowContents(inRect);
+            settings.DoSettingsWindowContents(inRect);
+        }
+
+        public override string SettingsCategory()
+        {
+            return "WhiteOnlyTitle".Translate();
         }
     }
 }
