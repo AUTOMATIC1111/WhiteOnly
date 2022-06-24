@@ -23,15 +23,16 @@ namespace WhiteOnly
             CrownType crownType = (Rand.Value < 0.5f) ? CrownType.Average : CrownType.Narrow;
             HairDef hairDef = RandomHairDefFor(gender);
             Color hairColor = PawnHairColors.RandomHairColor(skinColor, 18);
-
-            headGraphic = GraphicDatabaseHeadRecords.GetHeadRandom(gender, skinColor, crownType);
+            headGraphic = GraphicDatabaseHeadRecords.GetHeadRandom(gender, skinColor, crownType, false);
             hairGraphic = GraphicDatabase.Get<Graphic_Multi>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, hairColor);
         }
 
         public void Draw(Rect rect)
         {
             Material mat;
-            
+
+            GUI.color = Color.white;
+
             mat = headGraphic.MatSouth;
             Graphics.DrawTexture(rect, mat.mainTexture, mat, 0);
 
@@ -40,13 +41,13 @@ namespace WhiteOnly
         }
         public static HairDef RandomHairDefFor(Gender gender)
         {
-            return (from hair in DefDatabase<HairDef>.AllDefs where GenderMatches(gender, hair.hairGender) select hair).RandomElement();
+            return (from hair in DefDatabase<HairDef>.AllDefs where GenderMatches(gender, hair.styleGender) select hair).RandomElement();
         }
 
-        public static bool GenderMatches(Gender gender, HairGender hairGender) {
-            if (hairGender == HairGender.Any) return true;
-            if (gender == Gender.Male && (hairGender == HairGender.Male || hairGender == HairGender.MaleUsually)) return true;
-            if (gender == Gender.Female && (hairGender == HairGender.Female || hairGender == HairGender.FemaleUsually)) return true;
+        public static bool GenderMatches(Gender gender, StyleGender styleGender) {
+            if (styleGender == StyleGender.Any) return true;
+            if (gender == Gender.Male && (styleGender == StyleGender.Male || styleGender == StyleGender.MaleUsually)) return true;
+            if (gender == Gender.Female && (styleGender == StyleGender.Female || styleGender == StyleGender.FemaleUsually)) return true;
 
             return false;
         }
