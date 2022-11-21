@@ -18,13 +18,24 @@ namespace WhiteOnly
 
         public PawnGraphicRenderer(float melanin)
         {
+            PatchPawnSkinColorsGetSkinColorGene.skip = true;
             Color skinColor = PawnSkinColors.GetSkinColor(this.melanin = melanin);
+            PatchPawnSkinColorsGetSkinColorGene.skip = false;
             Gender gender = (Rand.Value < 0.5f) ? Gender.Male : Gender.Female;
-            CrownType crownType = (Rand.Value < 0.5f) ? CrownType.Average : CrownType.Narrow;
+
+            HeadTypeDef headTypeDef = DefDatabase<HeadTypeDef>.AllDefsListForReading.RandomElement();
+            headGraphic = headTypeDef.GetGraphic(skinColor, false, false);
+
+            Color hairColor = PawnHairColors.RandomHairColor(null, skinColor, 18);
             HairDef hairDef = RandomHairDefFor(gender);
-            Color hairColor = PawnHairColors.RandomHairColor(skinColor, 18);
-            headGraphic = GraphicDatabaseHeadRecords.GetHeadRandom(gender, skinColor, crownType, false);
-            hairGraphic = GraphicDatabase.Get<Graphic_Multi>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, hairColor);
+            try
+            {
+                hairGraphic = GraphicDatabase.Get<Graphic_Multi>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, hairColor);
+            }
+            catch (Exception)
+            {
+                hairGraphic = null;
+            }
         }
 
         static Rect sourceRect = new Rect(0f, 0f, 1f, 1f);
@@ -41,8 +52,10 @@ namespace WhiteOnly
             mat = headGraphic.MatSouth;
             Graphics.DrawTexture(rect, mat.mainTexture, sourceRect, 0, 0, 0, 0, Color.white, mat, 0);
 
-            mat = hairGraphic.MatSouth;
-            Graphics.DrawTexture(rect, mat.mainTexture, sourceRect, 0, 0, 0, 0, Color.white, mat, 0);
+            if (hairGraphic != null) {
+                mat = hairGraphic.MatSouth;
+                Graphics.DrawTexture(rect, mat.mainTexture, sourceRect, 0, 0, 0, 0, Color.white, mat, 0);
+            }
         }
         public static HairDef RandomHairDefFor(Gender gender)
         {
