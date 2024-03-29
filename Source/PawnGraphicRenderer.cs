@@ -24,7 +24,7 @@ namespace WhiteOnly
             Gender gender = (Rand.Value < 0.5f) ? Gender.Male : Gender.Female;
 
             HeadTypeDef headTypeDef = DefDatabase<HeadTypeDef>.AllDefsListForReading.RandomElement();
-            headGraphic = headTypeDef.GetGraphic(skinColor, false, false);
+            headGraphic = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(headTypeDef.graphicPath, ShaderDatabase.CutoutSkin, Vector2.one, skinColor);
 
             Color hairColor = PawnHairColors.RandomHairColor(null, skinColor, 18);
             HairDef hairDef = RandomHairDefFor(gender);

@@ -29,12 +29,6 @@ namespace WhiteOnly
             var harmony = new Harmony("com.github.automatic1111.whiteonly");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            if (GenTypes.GetTypeInAnyAssembly("AlienRace.HarmonyPatches") != null)
-            {
-                applyOptionalPatch(harmony, "AlienRace.ColorGenerator_SkinColorMelanin", "NewRandomizedColor", new HarmonyMethod(typeof(PatchColorGenerator_SkinColorMelanin), "Prefix"));
-                applyOptionalPatch(harmony, "Verse.PawnGraphicSet", "ResolveApparelGraphics", new HarmonyMethod(typeof(PatchPawnGraphicSetResolveApparelGraphics), "Prefix"));
-            }
-
             settings = GetSettings<WhiteOnlySettings>();
         }
 
